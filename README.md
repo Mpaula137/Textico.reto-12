@@ -24,63 +24,104 @@ Exportar el archivo a un terminar y luego leer y usar los diferentes métodos pa
 1. Procesar el <a href="https://drive.google.com/file/d/1lGmlAz157fIDp2zk95KInTSJguZusI91/view?usp=sharing">archivo</a> y extraer:
  - Cantidad de vocales:
  ```
- Cantidad_vocales = [0, 0, 0, 0, 0]
- def contar_vocales(archivo): # creamos la función para contar las vocales
-    # Leer el archivo de texto
-    with open(archivo, 'r') as archivo_texto:
-        texto =archivo_texto.read()
-with open("archivito.txt") as archivo_texto:
-    for line in archivo_texto: #para cada linea en el archivo de texto
-        line = line.lower()  # Se convierte la linea a minúscula
-        print(line)#actualiza la linea
-        Cantidad_vocales[0] += line.count("a") #se cuenta la cantidad de "a" y se almacena la cantidad en el primer indice de la lista
-        Cantidad_vocales[1] += line.count("e")#se cuenta la cantidad de "e" y se almacena la cantidad en el segundo indice de la lista
-        Cantidad_vocales[2] += line.count("i")#se cuenta la cantidad de "i" y se almacena la cantidad en el tercero indice de la lista
-        Cantidad_vocales[3] += line.count("o")#se cuenta la cantidad de "o" y se almacena la cantidad en el cuarto indice de la lista
-        Cantidad_vocales[4] += line.count("u")#se cuenta la cantidad de "u" y se almacena la cantidad en el quinto indice de la lista
+Cantidad_vocales = [0, 0, 0, 0, 0]
 
-    print("Cantidad de a:", Cantidad_vocales[0], "\n", "Cantidad de e:", Cantidad_vocales[1], "\n", "Cantidad de i:", Cantidad_vocales[2], "\n", "Cantidad de o:", Cantidad_vocales[3], "\n", "Cantidad de u:", Cantidad_vocales[4] )
+def contar_vocales(archivo):
+    global Cantidad_vocales  # Declarar la lista como una variable global
+
+    with open(archivo, 'r') as archivo_texto:
+        texto = archivo_texto.read()
+
+    for line in texto.splitlines(): # Divide el texto en lineas individuales 
+        line = line.lower() # Convierte cada linea en minusculas
+        print(line) 
+        Cantidad_vocales[0] += line.count("a")
+        Cantidad_vocales[1] += line.count("e")
+        Cantidad_vocales[2] += line.count("i")
+        Cantidad_vocales[3] += line.count("o")
+        Cantidad_vocales[4] += line.count("u")
+
+    print("Cantidad de a:", Cantidad_vocales[0])
+    print("Cantidad de e:", Cantidad_vocales[1])
+    print("Cantidad de i:", Cantidad_vocales[2])
+    print("Cantidad de o:", Cantidad_vocales[3])
+    print("Cantidad de u:", Cantidad_vocales[4])
+
+# Llamar a la función con el archivo deseado
+contar_vocales("archivito.txt")
+
+
  ```
  - Cantidad de consonantes:
  ```
- Cantidad_consonantes = 0    #inicializamos la variable consonates en 0
-def contar_consonantes(archivo): # creamos la función para contar las consonantes
-        # Leer el archivo de texto
-    with open(archivo, 'r') as archivo_texto:
-        texto =archivo_texto.read()
-with open("archivito.txt") as archivo_texto:
-    for line in archivo_texto: # para cada linea del texto
-        line = line.lower()  # Se convierte la linea a minúscula
-        print(line) # se actualiza la linea
-        for char in line: #para cada caracter en linea
-            if char not in "aeiou" and char.isalpha(): # si el caracter no es ninguna vocal y es un caracter para eso se usa "isalpha"
-                Cantidad_consonantes += 1 # se le suma 1 a la cantidad de consonates
+Cantidad_consonantes = 0  # Inicializamos la variable consonantes en 0
+
+def contar_consonantes(archivo):
+    global Cantidad_consonantes  # Declarar la variable como global para poder modificarla dentro de la función
+
+    with open(archivo, 'r') as archivo_texto: #Abrir y leer el texto
+        texto = archivo_texto.read()
+
+    for line in texto.splitlines():  # divide el texto por lineas
+        line = line.lower()# convierte el texto en minusculas
+        print(line)
+        for char in line: #Para cada caracterter en la linea
+            if char not in "aeiou" and char.isalpha():#si no es vocal y es caracter
+                Cantidad_consonantes += 1# sumar a la cantidad de consonantes
+
     print("Cantidad de consonantes:", Cantidad_consonantes)
+
+# Llamar a la función con el archivo deseado
+contar_consonantes("archivito.txt")
  ```
  - Listado de las 50 palabras que más se repiten:
  ```
- def lista_repeticiones(archivo): # creamos una función para la lista de las palabras mas repetidas
-    # Leer el archivo de texto
+Palabras = {}
+Listasde_nodeseados = [",", ".", ";", ":", "-", "_", "/", "?", "!", "#", "<", ">", "(", ")", "{", "}", "]", "[", "\"", "\'"]
+
+def lista_repeticiones(archivo): # Abrir archivo
     with open(archivo, 'r') as archivo_texto:
-        texto= archivo_texto.read()
-with open("archivito.txt") as archivo_texto:
-    for line in archivo_texto: # para cada linea del archivo
-        line = line.lower()  # Se convierte la linea a minúscula
-        print(line)
-        Temporal = line.split()  # Se almacenan las palabras de cada linea, separas por el metodo split
-        print(Temporal)
-        for palabra in Temporal: # para cada palabra almacenada en temporal
-            if palabra.endswith(tuple(Listasde_nodeseados)): # si la palabra termina en alguno de lo elementos no deseados
-                palabra = palabra.rstrip(palabra[-1]) # eliminar ese elemento no deseado
-            if palabra.startswith(tuple(Listasde_nodeseados)): # si la palabra comenzaba con alguno de lo elementos no deseados
-                palabra = palabra.lstrip(palabra[0])# eliminar el elemento no deseado
-            if palabra not in Palabras: # si la palabra no esta en el diccionario iniciar la variable
-                Palabras[palabra] = 1
-            else: # de lo contrario sumar una cantidad al elemento
-                Palabras[palabra] += 1
-        palabras_ordenadas = sorted(Palabras, key=Palabras.get, reverse=True) # ordenamos las palabras segun el valor de cada una
-    print(palabras_ordenadas[:50])#usamos slicing para imprimir en una lista las primeras 5o palabras mas repetidas
+        texto = archivo_texto.read()
+
+    for line in texto.splitlines(): #separa el texto en lineas
+        line = line.lower()# convierte el texto en minusculas
+        Temporal = line.split() # en la variable temporal divide por palabras cada linea
+
+        for palabra in Temporal:
+            if palabra.endswith(tuple(Listasde_nodeseados)): # si termina en lista de no desados
+                palabra = palabra.rstrip(palabra[-1])# se elimina el no deseado
+            if palabra.startswith(tuple(Listasde_nodeseados)):# si empieza en lista de no deseados
+                palabra = palabra.lstrip(palabra[0])# se elmina el no deseado
+            if palabra not in Palabras: #si la palabra no es esta en palabras
+                Palabras[palabra] = 1# queda en uno
+            else:
+                Palabras[palabra] += 1#si la palabra si esta almacenada se suma uno a la variable
+
+    palabras_ordenadas = sorted(Palabras, key=Palabras.get, reverse=True) #Se ordenan segun el valor de cada palabra
+    print(palabras_ordenadas[:50]) # el slicing permite que solo se muestren las primeros 50 palabras
+
+# Llamar a la función con el archivo deseado
+lista_repeticiones("archivito.txt")
  ```
- - Listado de destinatarios con cantidad de mensajes recibidos
+ - Listado de destinatarios con cantidad de mensajes recibidos:
+ ```
+ def destinatarios_mensanjes(archivo):
+    cuenta_destinatarios = {}  # Diccionario para almacenar los destinatarios y la cantidad de mensajes recibidos
+    
+    with open(archivo, 'r') as archivo_texto:
+        for line in archivo_texto:  # recorrer cada linea del texto
+            linea = line.strip()  # usar la función strip para eliminar los espacios al principio y al final de la línea
+            if linea.startswith("To:"):
+                destinatario = linea[4:].strip()  # extraer el destinatario eliminando el prefijo "To:"
+                cuenta_destinatarios[destinatario] = cuenta_destinatarios.get(destinatario, 0) + 1  # actualizar el diccionario
+    
+    print("Listado de destinatarios con cantidad de mensajes recibidos:")
+    for destinatario, cuenta in cuenta_destinatarios.items():
+        print(f"{destinatario}: {cuenta} mensajes")
+
+# Llamar a la función con el archivo deseado
+destinatarios_mensanjes("archivito.txt")
+
+ ```
  - Cantidad de mensajes enviados por cada día
  
