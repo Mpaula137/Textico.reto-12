@@ -124,4 +124,36 @@ destinatarios_mensanjes("archivito.txt")
 
  ```
  - Cantidad de mensajes enviados por cada día
+ ```
+ def mensajes_diarios(texto: str) -> dict:
+    mensajes_rec = []  # Lista para almacenar los segmentos del texto que contienen información sobre la fecha.
+    palabras = texto.split()  # Dividir el texto en palabras individuales utilizando split().
+
+    for i in range(len(palabras)):
+        if palabras[i] == "Received:":  # Crear una lista de palabras desde "Received" hasta "(GMT)" o "-0500".
+            segmento = []
+            while palabras[i] != "-0500" and palabras[i] != "(GMT)":
+                segmento.append(palabras[i])
+                i += 1
+            mensajes_rec.append(segmento)
+
+    men_por_dia = {}  # Diccionario para almacenar el día y el número de mensajes enviados.
+    
+    for segmento in mensajes_rec:
+        indice = segmento.index('Jan')  # Índice de la palabra "Jan".
+        dia = int(segmento[indice - 1])  # Extraer el día basado en el índice de "Jan".
+        if dia in men_por_dia:
+            men_por_dia[dia] += 1
+        else:
+            men_por_dia[dia] = 1
+
+    return men_por_dia
+
+if __name__ == "__main__":
+    with open("archivito.txt", "r") as archivo:
+        numero_dia = mensajes_diarios(archivo.read())
+        for dia in numero_dia:
+            print(f"{numero_dia[dia]} mensajes enviados el {dia} de enero, 2008")
+ ```
+ ## Ya no puedo mas con este semestre!!
  
